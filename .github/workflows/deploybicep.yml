@@ -26,7 +26,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: Copy files to the runner
+        uses: actions/checkout@v4
 
       - name: Azure Login
         uses: Azure/login@v2.1.1
@@ -35,7 +36,7 @@ jobs:
           # Set this value to true to enable Azure PowerShell Login in addition to Azure CLI login
           enable-AzPSSession: true
 
-      - name: Azure PowerShell Action
+      - name: Create a new resource group in Azure
         uses: Azure/powershell@v2
         with:
             # Specify the Az PowerShell script here.
@@ -43,7 +44,7 @@ jobs:
             # Azure PS version to be used to execute the script, example: 1.8.0, 2.8.0, 3.4.0. To use the latest version, specify "latest".
             azPSVersion: latest
       
-      - name: Deploy Azure Resource Manager (ARM) Template
+      - name: Deploy Bicep File
         uses: Azure/arm-deploy@v2
         with:
               # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'tenant', 'managementgroup', 'subscription'
